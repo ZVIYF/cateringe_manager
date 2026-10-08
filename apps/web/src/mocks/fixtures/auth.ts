@@ -1,4 +1,4 @@
-// TODO(api-request #TBD): untyped on purpose — @catering/shared has no User/Me schema yet.
+// TODO(api-request #4): untyped on purpose — @catering/shared has no User/Me schema yet.
 // Shape follows API_CONTRACT.md §2.2. Permission strings below are placeholders.
 export const mockPassword = 'Passw0rd!';
 
