@@ -1,0 +1,14 @@
+node_modules
+dist
+coverage
+.vite
+*.tsbuildinfo
+.env
+.env.local
+
+# Office lock files
+~$*
+
+# OS
+.DS_Store
+Thumbs.db
