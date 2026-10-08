@@ -1,10 +1,31 @@
-node_modules
-dist
-coverage
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
 .vite
 *.tsbuildinfo
+
+# Environment
 .env
 .env.local
+.env.*.local
+
+# Prisma
+apps/api/prisma/migrations/dev.db
+apps/api/prisma/*.db
+
+# Generated
+apps/api/src/generated/
+
+# Logs
+*.log
+logs/
+
+# Test coverage
+coverage/
 
 # Office lock files
 ~$*
@@ -12,3 +33,7 @@ coverage
 # OS
 .DS_Store
 Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/
