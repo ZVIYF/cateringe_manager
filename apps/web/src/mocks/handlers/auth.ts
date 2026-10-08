@@ -1,4 +1,4 @@
-import { errorStatus, type ErrorCode } from '@catering/shared';
+import { AuthSchemas, errorStatus, type ErrorCode } from '@catering/shared';
 import { http, HttpResponse } from 'msw';
 import { mockPassword, mockPermissions, mockUsers } from '../fixtures/auth';
 
@@ -58,22 +58,27 @@ export const authHandlers = [
     if (injected) {
       return errorResponse(injected, injected === 'VALIDATION_ERROR' ? { email: 'אימייל לא תקין' } : undefined);
     }
-    const body = (await request.json()) as { email?: string; password?: string; rememberMe?: boolean };
-    const fields: Record<string, string> = {};
-    if (!body.email?.includes('@')) fields.email = 'אימייל לא תקין';
-    if (!body.password || body.password.length < 8) fields.password = 'לפחות 8 תווים';
-    if (Object.keys(fields).length) return errorResponse('VALIDATION_ERROR', fields);
+    const parsed = AuthSchemas.LoginBody.safeParse(await request.json());
+    if (!parsed.success) {
+      const fields: Record<string, string> = {};
+      for (const issue of parsed.error.issues) {
+        const field = String(issue.path[0]);
+        fields[field] ??= field === 'password' ? 'לפחות 8 תווים' : 'אימייל לא תקין';
+      }
+      return errorResponse('VALIDATION_ERROR', fields);
+    }
+    const body = parsed.data;
 
     const user = mockUsers.find((u) => u.email === body.email);
     if (!user || body.password !== mockPassword) return errorResponse('UNAUTHENTICATED');
     writeSession(user.id, body.rememberMe);
-    return HttpResponse.json({ data: { accessToken: TOKEN_PREFIX + user.id, user } });
+    return HttpResponse.json<AuthSchemas.LoginResponse>({ data: { accessToken: TOKEN_PREFIX + user.id, user } });
   }),
 
   http.post('*/auth/refresh', () => {
     const user = mockUsers.find((u) => u.id === readSession());
     if (!user) return errorResponse('UNAUTHENTICATED');
-    return HttpResponse.json({ data: { accessToken: TOKEN_PREFIX + user.id, user } });
+    return HttpResponse.json<AuthSchemas.LoginResponse>({ data: { accessToken: TOKEN_PREFIX + user.id, user } });
   }),
 
   http.get('*/auth/me', ({ request }) => {
@@ -81,7 +86,7 @@ export const authHandlers = [
     if (injected) return errorResponse(injected);
     const user = userFromToken(request.headers.get('Authorization'));
     if (!user) return errorResponse('UNAUTHENTICATED');
-    return HttpResponse.json({ data: { user, permissions: mockPermissions[user.role] } });
+    return HttpResponse.json<AuthSchemas.MeResponse>({ data: { user, permissions: mockPermissions[user.role] } });
   }),
 
   http.post('*/auth/logout', () => {
