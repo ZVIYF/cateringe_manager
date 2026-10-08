@@ -1,0 +1,53 @@
+// Prisma schema — Catering Management System
+// DB: PostgreSQL 16, managed by Prisma ORM
+// Conventions: snake_case in DB, camelCase in JS (Prisma maps automatically)
+// Money: all amounts stored as Int (agorot). No floats.
+// IDs: cuid() — matches the API contract (§1.1)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Enums — kept in sync with packages/shared/src/enums.ts
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum Role {
+  ADMIN
+  OFFICE
+  KITCHEN_MANAGER
+  KITCHEN_STAFF
+  DRIVER
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// User model (Week 1 — Auth & Users module)
+// Fields: id, email, passwordHash, role, active
+// Extra useful fields added now so seed/auth work correctly.
+// ─────────────────────────────────────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  name         String
+  role         Role
+  active       Boolean  @default(true)
+  phone        String?
+
+  // Audit
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Password reset
+  resetToken          String?   @unique @map("reset_token")
+  resetTokenExpiresAt DateTime? @map("reset_token_expires_at")
+
+  @@map("users")
+}
+
