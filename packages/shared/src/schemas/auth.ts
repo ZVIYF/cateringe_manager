@@ -53,3 +53,8 @@ export const ResetPasswordBody = z.object({
 });
 export type ResetPasswordBody = z.infer<typeof ResetPasswordBody>;
 
+// ── Aliases for Frontend (Issue #4) ───────────────────────────────────────────
+export type User = AuthUser;
+export type Me = z.infer<typeof MeResponse>["data"];
+export type AuthResult = z.infer<typeof LoginResponse>["data"];
+

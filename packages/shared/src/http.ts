@@ -13,6 +13,7 @@ export const ErrorCode = z.enum([
   'KASHRUT_CONFLICT',
   'DISCOUNT_REQUIRES_APPROVAL',
   'RATE_LIMITED',
+  'ACCOUNT_LOCKED',
   'INTERNAL_ERROR',
   'PROVIDER_ERROR'
 ]);
@@ -31,6 +32,7 @@ export const errorStatus: Record<ErrorCode, number> = {
   KASHRUT_CONFLICT: 422,
   DISCOUNT_REQUIRES_APPROVAL: 422,
   RATE_LIMITED: 429,
+  ACCOUNT_LOCKED: 429,
   INTERNAL_ERROR: 500,
   PROVIDER_ERROR: 502
 };
@@ -39,7 +41,10 @@ export const ApiErrorSchema = z.object({
   error: z.object({
     code: ErrorCode,
     message: z.string(),
-    details: z.object({ fields: z.record(z.string()).optional() }).passthrough().optional(),
+    details: z.object({
+      fields: z.record(z.string()).optional(),
+      retryAfterSeconds: z.number().optional()
+    }).passthrough().optional(),
     requestId: z.string()
   })
 });

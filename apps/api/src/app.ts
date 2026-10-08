@@ -43,7 +43,6 @@ export function createApp(): Express {
   });
 
   // ── Global error handler ─────────────────────────────────────────────────────
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
     const requestId = (req as Request & { requestId?: string }).requestId ?? 'unknown';
 

@@ -98,6 +98,7 @@
 | 422 | `KASHRUT_CONFLICT` | מנה חלבית בהזמנה בשרית וכו' | שגיאה ליד המנה |
 | 422 | `DISCOUNT_REQUIRES_APPROVAL` | הנחה מעל 15% ע"י משתמש שאינו מנהל | הודעה |
 | 429 | `RATE_LIMITED` | יותר מדי בקשות | Toast, ניסיון חוזר אחרי `Retry-After` |
+| 429 | `ACCOUNT_LOCKED` | 5 failed login attempts | Show locked message with countdown |
 | 500 | `INTERNAL_ERROR` | תקלה בשרת | Toast כללי + requestId |
 | 502 | `PROVIDER_ERROR` | ספק חיצוני (סליקה, SMS, חשבוניות) נכשל | Toast, אפשרות לנסות שוב |
 
