@@ -183,6 +183,8 @@ pnpm --filter api db:seed     # משתמש לכל תפקיד, 20 מנות, 10 ל
 pnpm dev                      # web על 5173, api על 4000
 ```
 
+> **חשוב:** את `pnpm --filter api db:generate` חובה להריץ אחרי כל `git clone` חדש, ואחרי כל שינוי ב-`apps/api/prisma/schema.prisma`. הפקודה מייצרת את ה-Prisma client (הקוד המיוצר לא נשמר ב-git). בלעדיה `pnpm typecheck` לא רואה את הטיפוסים של `prisma.*` ונכשל. ב-CI השלב הזה רץ אוטומטית.
+
 משתמשי seed (סיסמה לכולם: `Passw0rd!`):
 
 | אימייל | תפקיד |

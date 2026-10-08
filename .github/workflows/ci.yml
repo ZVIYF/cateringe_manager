@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    name: Typecheck, lint, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: catering
+          POSTGRES_PASSWORD: catering
+          POSTGRES_DB: catering
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U catering -d catering"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgresql://catering:catering@localhost:5432/catering
+      JWT_ACCESS_SECRET: ci-access-secret
+      JWT_REFRESH_SECRET: ci-refresh-secret
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # No `version:` here: pnpm/action-setup reads it from the root
+      # package.json "packageManager" field.
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # The Prisma client is generated code (not committed). Required before
+      # typecheck so that prisma.* types exist.
+      - run: pnpm --filter api db:generate
+
+      - run: pnpm --filter api db:migrate:deploy
+
+      - run: pnpm -r typecheck
+      - run: pnpm -r lint
+      - run: pnpm -r test
+      - run: pnpm -r build
+
+  contract-warning:
+    name: Contract files changed (warning only)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Never fails the job: it only raises a warning annotation on the PR.
+      - name: Flag changes to the API contract
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          changed=$(git diff --name-only "origin/${BASE_REF}...HEAD" -- \
+            packages/shared/ docs/API_CONTRACT.md docs/API_CHANGELOG.md)
+
+          if [ -z "$changed" ]; then
+            echo "No contract files changed."
+            exit 0
+          fi
+
+          echo "::warning title=Contract change::This PR touches the API contract (packages/shared, docs/API_CONTRACT.md, docs/API_CHANGELOG.md). It needs approval from both developers (see docs/WORKFLOW.md)."
+          {
+            echo "### :warning: This PR changes the API contract"
+            echo
+            echo "Contract changes need approval from both developers."
+            echo
+            echo '```'
+            echo "$changed"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
