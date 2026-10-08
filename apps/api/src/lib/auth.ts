@@ -3,19 +3,18 @@ import jwt from 'jsonwebtoken';
 import type { Role } from '@catering/shared';
 import { unauthenticated, tokenExpired, forbidden } from './errors';
 
-interface JwtPayload {
+export interface JwtPayload {
   sub: string;   // user id
   email: string;
   role: Role;
-  iat: number;
-  exp: number;
+  name: string;
 }
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
-      user?: JwtPayload;
+      user?: JwtPayload & { iat: number; exp: number };
     }
   }
 }
@@ -37,7 +36,7 @@ export function requireAuth(req: Request, _res: Response, next: NextFunction): v
   try {
     const secret = process.env['JWT_ACCESS_SECRET'];
     if (!secret) throw new Error('JWT_ACCESS_SECRET not configured');
-    req.user = jwt.verify(token, secret) as JwtPayload;
+    req.user = jwt.verify(token, secret) as JwtPayload & { iat: number; exp: number };
     next();
   } catch (err) {
     if (err instanceof jwt.TokenExpiredError) return next(tokenExpired());
@@ -55,5 +54,34 @@ export function requireRole(...roles: Role[]) {
     if (!roles.includes(req.user.role)) return next(forbidden());
     next();
   };
+}
+
+export function generateTokens(payload: JwtPayload, rememberMe: boolean = false) {
+  const accessSecret = process.env['JWT_ACCESS_SECRET'];
+  const refreshSecret = process.env['JWT_REFRESH_SECRET'];
+
+  if (!accessSecret || !refreshSecret) {
+    throw new Error('JWT secrets not configured');
+  }
+
+  const accessToken = jwt.sign(payload, accessSecret, { expiresIn: '15m' });
+  const refreshToken = jwt.sign(payload, refreshSecret, { expiresIn: rememberMe ? '30d' : '7d' });
+
+  return { accessToken, refreshToken };
+}
+
+export function setRefreshTokenCookie(res: Response, token: string, rememberMe: boolean = false) {
+  const maxAge = (rememberMe ? 30 : 7) * 24 * 60 * 60 * 1000; // in milliseconds
+  res.cookie('refreshToken', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/api/v1/auth',
+    maxAge,
+  });
+}
+
+export function clearRefreshTokenCookie(res: Response) {
+  res.clearCookie('refreshToken', { path: '/api/v1/auth' });
 }
 
