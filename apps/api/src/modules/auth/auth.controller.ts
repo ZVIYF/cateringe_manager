@@ -48,7 +48,7 @@ export async function refresh(req: Request, res: Response, next: NextFunction): 
     let payload: JwtPayload;
     try {
       payload = jwt.verify(refreshToken, refreshSecret) as JwtPayload;
-    } catch (err) {
+    } catch {
       return next(unauthenticated('הטוקן פג תוקף או שגוי'));
     }
 
@@ -116,6 +116,6 @@ export function forgotPassword(_req: Request, res: Response, _next: NextFunction
 
 export function resetPassword(_req: Request, res: Response, _next: NextFunction): void {
   // TODO(be/auth-impl): verify reset token, hash new password, clear token
-  res.status(501).json({ error: { code: 'INTERNAL_ERROR', message: 'טרם מומש', requestId: (_req as any).requestId } });
+  res.status(501).json({ error: { code: 'INTERNAL_ERROR', message: 'טרם מומש', requestId: (_req as Request & { requestId?: string }).requestId ?? 'unknown' } });
 }
 

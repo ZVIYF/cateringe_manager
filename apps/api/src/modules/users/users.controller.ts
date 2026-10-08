@@ -6,7 +6,7 @@ import { duplicate, notFound } from '../../lib/errors';
 
 export async function getUsers(req: Request, res: Response, next: NextFunction): Promise<void> {
   try {
-    const { page, pageSize, sort, q } = req.query as unknown as typeof ListQuery._type;
+    const { page, pageSize, q } = req.query as unknown as typeof ListQuery._type;
 
     // Build the query where clause if q is provided
     const where = q ? {
@@ -27,7 +27,7 @@ export async function getUsers(req: Request, res: Response, next: NextFunction):
     ]);
 
     res.json({
-      data: users.map((u: any) => UserSchemas.UserPublic.parse(u)),
+      data: users.map((u) => UserSchemas.UserPublic.parse(u)),
       meta: { page, pageSize, total, totalPages: Math.ceil(total / pageSize) }
     });
   } catch (err) {
