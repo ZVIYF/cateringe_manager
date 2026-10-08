@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import { requestIdMiddleware } from './lib/requestId';
 import { AppError } from './lib/errors';
 import { authRouter } from './modules/auth/auth.routes';
+import { usersRouter } from './modules/users/users.routes';
 
 export function createApp(): Express {
   const app = express();
@@ -23,6 +24,7 @@ export function createApp(): Express {
 
   // ── Routes ───────────────────────────────────────────────────────────────────
   app.use('/api/v1/auth', authRouter);
+  app.use('/api/v1/users', usersRouter);
 
   // Health check — used by Docker / CI
   app.get('/health', (_req: Request, res: Response) => {
