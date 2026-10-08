@@ -2,7 +2,7 @@ import type { Role } from '@catering/shared';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiFetch, getAccessToken, refreshSession, setAccessToken } from './client';
 
-// TODO(api-request #TBD): no User/Me/Login Zod schemas exist in @catering/shared yet.
+// TODO(api-request #4): no User/Me/Login Zod schemas exist in @catering/shared yet.
 // These local types mirror API_CONTRACT.md §2.2 only; replace with the shared schemas
 // (and parse responses with them) once the backend adds them.
 export interface SessionUser {
