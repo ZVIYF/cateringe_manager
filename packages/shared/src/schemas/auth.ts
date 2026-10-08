@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { Role } from '../enums';
-import { Id, IsoDateTime, dataOf } from '../http';
+import { Id, dataOf } from '../http';
 
 // ── The user object returned by /auth/login and /auth/me ──────────────────────
 export const AuthUser = z.object({
