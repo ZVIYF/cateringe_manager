@@ -2,12 +2,13 @@
   "name": "catering-manager",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@12.10.1",
   "engines": {
     "node": ">=20",
     "pnpm": ">=9"
   },
   "scripts": {
-    "dev": "pnpm --parallel --filter api --filter web dev",
+    "dev": "pnpm -r --parallel dev",
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",
     "test": "pnpm -r test",
@@ -17,4 +18,3 @@
     "typescript": "^5.5.0"
   }
 }
-

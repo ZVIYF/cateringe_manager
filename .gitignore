@@ -5,6 +5,8 @@ node_modules/
 # Build output
 dist/
 build/
+.vite
+*.tsbuildinfo
 
 # Environment
 .env
@@ -22,6 +24,12 @@ apps/api/src/generated/
 *.log
 logs/
 
+# Test coverage
+coverage/
+
+# Office lock files
+~$*
+
 # OS
 .DS_Store
 Thumbs.db
@@ -29,7 +37,3 @@ Thumbs.db
 # IDE
 .vscode/settings.json
 .idea/
-
-# Test coverage
-coverage/
-
