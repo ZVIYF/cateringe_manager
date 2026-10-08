@@ -7,4 +7,5 @@ allowBuilds:
   "@prisma/engines": true
   esbuild: true
   msgpackr-extract: true
+  msw: false
   prisma: true
