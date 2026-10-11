@@ -96,6 +96,28 @@ enum PaymentStatus {
   REFUNDED
 }
 
+enum KitchenTaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+  PACKED
+}
+
+enum StockMoveType {
+  IN
+  OUT
+  ADJUST
+  WASTE
+}
+
+enum PurchaseOrderStatus {
+  DRAFT
+  SENT
+  PARTIAL
+  RECEIVED
+}
+
+
 // ─────────────────────────────────────────────────────────────────────────────
 // User model (Week 1 — Auth & Users module)
 // Fields: id, email, passwordHash, role, active
@@ -219,4 +241,124 @@ model Payment {
 
   @@map("payments")
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Ingredient model (Phase 8 — Inventory & Kitchen module)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Ingredient {
+  id           String   @id @default(cuid())
+  name         String
+  category     String?
+  unit         String   @default("KG")
+  currentStock Float    @default(0) @map("current_stock")
+  minStock     Float    @default(0) @map("min_stock")
+  costPerUnit  Int      @map("cost_per_unit") // In agorot
+  supplierId   String?  @map("supplier_id")
+  supplierName String?  @map("supplier_name")
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("ingredients")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// StockMove model (Phase 8 — Inventory & Kitchen module)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model StockMove {
+  id             String        @id @default(cuid())
+  ingredientId   String        @map("ingredient_id")
+  ingredientName String?       @map("ingredient_name")
+  type           StockMoveType
+  qty            Float
+  reason         String
+  createdById    String?       @map("created_by_id")
+  createdByName  String?       @map("created_by_name")
+
+  createdAt      DateTime      @default(now()) @map("created_at")
+
+  @@map("stock_moves")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Supplier model (Phase 8 — Purchasing module)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Supplier {
+  id           String   @id @default(cuid())
+  name         String
+  contactName  String?  @map("contact_name")
+  phone        String
+  email        String?
+  categories   String[] @default([])
+  leadTimeDays Int      @default(1) @map("lead_time_days")
+  notes        String?
+
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("suppliers")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PurchaseOrder & PurchaseOrderLine models (Phase 8 — Purchasing module)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model PurchaseOrder {
+  id                   String              @id @default(cuid())
+  number               Int                 @default(autoincrement())
+  supplierId           String              @map("supplier_id")
+  supplierName         String              @map("supplier_name")
+  status               PurchaseOrderStatus @default(DRAFT)
+  lines                PurchaseOrderLine[]
+  total                Int                 @default(0) // In agorot
+  expectedDeliveryDate String?             @map("expected_delivery_date") // YYYY-MM-DD
+  sentAt               DateTime?           @map("sent_at")
+  receivedAt           DateTime?           @map("received_at")
+
+  createdAt            DateTime            @default(now()) @map("created_at")
+  updatedAt            DateTime            @updatedAt @map("updated_at")
+
+  @@map("purchase_orders")
+}
+
+model PurchaseOrderLine {
+  id              String        @id @default(cuid())
+  purchaseOrderId String        @map("purchase_order_id")
+  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  ingredientId    String        @map("ingredient_id")
+  ingredientName  String        @map("ingredient_name")
+  unit            String
+  qty             Float
+  receivedQty     Float         @default(0) @map("received_qty")
+  unitPrice       Int           @map("unit_price") // In agorot
+  lineTotal       Int           @map("line_total")  // In agorot
+
+  @@map("purchase_order_lines")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// KitchenTask model (Phase 8 — Kitchen module)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model KitchenTask {
+  id                  String            @id @default(cuid())
+  date                String            // YYYY-MM-DD
+  status              KitchenTaskStatus @default(TODO)
+  dish                Json              // { id, name, kashrut }
+  qty                 Float
+  unit                SaleUnit          @default(PORTION)
+  earliestDepartureAt DateTime?         @map("earliest_departure_at")
+  assigneeId          String?           @map("assignee_id")
+  assignee            Json?             // { id, name }
+  orders              Json              @default("[]") // [{ id, number, customerName, qty }]
+
+  createdAt           DateTime          @default(now()) @map("created_at")
+  updatedAt           DateTime          @updatedAt @map("updated_at")
+
+  @@map("kitchen_tasks")
+}
+
 
