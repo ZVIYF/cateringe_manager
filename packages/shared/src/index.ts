@@ -5,3 +5,4 @@ export * as AuthSchemas from './schemas/auth';
 export * as UserSchemas from './schemas/user';
 export * as OrderSchemas from './schemas/order';
 export * as CustomerSchemas from './schemas/customer';
+export * as DishSchemas from './schemas/dish';
