@@ -22,6 +22,7 @@ export type Role = z.infer<typeof Role>;
 export type OrderStatus = z.infer<typeof OrderStatus>;
 export type Kashrut = z.infer<typeof Kashrut>;
 export type DiscountType = z.infer<typeof DiscountType>;
+export type DeliveryStatus = z.infer<typeof DeliveryStatus>;
 
 export const labels = {
   Role: { ADMIN: 'מנהל', OFFICE: 'משרד', KITCHEN_MANAGER: 'מנהל מטבח', KITCHEN_STAFF: 'עובד מטבח', DRIVER: 'נהג' },
@@ -36,5 +37,6 @@ export const labels = {
   DishCategory: { STARTER: 'ראשונות', MAIN: 'עיקריות', SIDE: 'תוספות', SALAD: 'סלטים', DESSERT: 'קינוחים', DRINK: 'שתייה' },
   SaleUnit: { PORTION: 'מנה', TRAY: 'מגש', KG: 'ק"ג', UNIT: 'יחידה' },
   PaymentMethod: { CASH: 'מזומן', TRANSFER: 'העברה', CHECK: 'צ\'ק', CREDIT_CARD: 'אשראי' },
-  KitchenTaskStatus: { TODO: 'לביצוע', IN_PROGRESS: 'בהכנה', DONE: 'מוכן', PACKED: 'נארז' }
+  KitchenTaskStatus: { TODO: 'לביצוע', IN_PROGRESS: 'בהכנה', DONE: 'מוכן', PACKED: 'נארז' },
+  DeliveryStatus: { UNASSIGNED: 'לא שובץ', ASSIGNED: 'שובץ', EN_ROUTE: 'במשלוח', DELIVERED: 'נמסר' }
 } as const;
