@@ -27,7 +27,7 @@ export async function getUsers(req: Request, res: Response, next: NextFunction):
     ]);
 
     res.json({
-      data: users.map((u) => UserSchemas.UserPublic.parse(u)),
+      data: users.map((u: unknown) => UserSchemas.UserPublic.parse(u)),
       meta: { page, pageSize, total, totalPages: Math.ceil(total / pageSize) }
     });
   } catch (err) {
