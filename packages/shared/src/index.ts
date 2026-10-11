@@ -6,3 +6,4 @@ export * as UserSchemas from './schemas/user';
 export * as OrderSchemas from './schemas/order';
 export * as CustomerSchemas from './schemas/customer';
 export * as DishSchemas from './schemas/dish';
+export * as PublicQuoteSchemas from './schemas/publicQuote';
