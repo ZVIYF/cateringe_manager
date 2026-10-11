@@ -25,6 +25,28 @@ enum Role {
   DRIVER
 }
 
+enum DishCategory {
+  STARTER
+  MAIN
+  SIDE
+  SALAD
+  DESSERT
+  DRINK
+}
+
+enum Kashrut {
+  MEAT
+  DAIRY
+  PARVE
+}
+
+enum SaleUnit {
+  PORTION
+  TRAY
+  KG
+  UNIT
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // User model (Week 1 — Auth & Users module)
 // Fields: id, email, passwordHash, role, active
@@ -49,5 +71,33 @@ model User {
   resetTokenExpiresAt DateTime? @map("reset_token_expires_at")
 
   @@map("users")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Dish model (Phase 4 — Dishes module)
+// Fields: id, version, name, category, kashrut, unit, portionsPerUnit, price,
+//         imageUrl, allergens, active, recipe, cost, timestamps
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Dish {
+  id              String       @id @default(cuid())
+  version         Int          @default(1)
+  name            String
+  category        DishCategory
+  kashrut         Kashrut
+  unit            SaleUnit     @default(PORTION)
+  portionsPerUnit Float        @default(1) @map("portions_per_unit")
+  price           Int          // In agorot
+  imageUrl        String?      @map("image_url")
+  allergens       String[]     @default([])
+  active          Boolean      @default(true)
+  recipe          Json         @default("[]") // Recipe lines: [{ ingredientId, ingredientName, unit, qtyPerPortion }]
+  cost            Json?        // Cost info: { perPortion, marginPercent }
+
+  // Audit
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("dishes")
 }
 
