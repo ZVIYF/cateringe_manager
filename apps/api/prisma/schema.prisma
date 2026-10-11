@@ -47,6 +47,48 @@ enum SaleUnit {
   UNIT
 }
 
+enum OrderStatus {
+  DRAFT
+  QUOTE_SENT
+  CONFIRMED
+  IN_PRODUCTION
+  READY
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CLOSED
+  LOST
+  CANCELLED
+}
+
+enum EventType {
+  CELEBRATION
+  BRIT
+  BAR_MITZVAH
+  CORPORATE
+  SHABBAT
+  OTHER
+}
+
+enum ServiceType {
+  DELIVERY
+  DELIVERY_AND_SERVING
+  PICKUP
+}
+
+enum DiscountType {
+  NONE
+  FIXED
+  PERCENT
+}
+
+enum PaymentMethod {
+  CASH
+  TRANSFER
+  CHECK
+  CREDIT_CARD
+  NET_30
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // User model (Week 1 — Auth & Users module)
 // Fields: id, email, passwordHash, role, active
@@ -99,5 +141,34 @@ model Dish {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("dishes")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Order model (Phase 5 — Orders module)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Order {
+  id                 String      @id @default(cuid())
+  number             Int         @default(autoincrement())
+  status             OrderStatus @default(DRAFT)
+  version            Int         @default(1)
+  customerId         String      @map("customer_id")
+  customer           Json        // { id, name, phone }
+  event              Json        // Event: { id, title, type, startsAt, address, lat, lng, guests, kashrut, serviceType, notes }
+  items              Json        @default("[]") // OrderItem[]: [{ id, dishId, dishName, category, unit, qty, unitPrice, priceOverridden, lineTotal, notes }]
+  services           Json        @default("[]") // OrderService[]: [{ id, serviceId, name, qty, unitPrice, lineTotal }]
+  pricing            Json        // Pricing: { discountType, discountValue, vatPercent, pricesIncludeVat, depositPercent, paymentTerms, validUntil }
+  totals             Json        // Totals: { subtotal, discount, vat, total, deposit, paid, balance, perGuest }
+  allowedTransitions OrderStatus[] @map("allowed_transitions")
+  isLocked           Boolean     @default(false) @map("is_locked")
+  latestQuoteVersion Int?        @map("latest_quote_version")
+  createdById        String      @map("created_by_id")
+  createdBy          Json        // { id, name }
+
+  // Audit
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("orders")
 }
 

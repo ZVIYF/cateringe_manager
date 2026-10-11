@@ -7,6 +7,7 @@ import { AppError } from './lib/errors';
 import { authRouter } from './modules/auth/auth.routes';
 import { usersRouter } from './modules/users/users.routes';
 import { dishesRouter } from './modules/dishes/dishes.routes';
+import { ordersRouter } from './modules/orders/orders.routes';
 
 export function createApp(): Express {
   const app = express();
@@ -27,6 +28,7 @@ export function createApp(): Express {
   app.use('/api/v1/auth', authRouter);
   app.use('/api/v1/users', usersRouter);
   app.use('/api/v1/dishes', dishesRouter);
+  app.use('/api/v1/orders', ordersRouter);
 
   // Health check — used by Docker / CI
   app.get('/health', (_req: Request, res: Response) => {
