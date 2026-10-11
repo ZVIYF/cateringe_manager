@@ -15,6 +15,7 @@ import { reportsRouter } from './modules/reports/reports.routes';
 import { ingredientsRouter, inventoryRouter } from './modules/inventory/inventory.routes';
 import { suppliersRouter, purchaseOrdersRouter } from './modules/purchasing/purchasing.routes';
 import { kitchenRouter } from './modules/kitchen/kitchen.routes';
+import { deliveriesRouter, driverRouter } from './modules/deliveries/deliveries.routes';
 
 export function createApp(): Express {
   const app = express();
@@ -45,6 +46,8 @@ export function createApp(): Express {
   app.use('/api/v1/suppliers', suppliersRouter);
   app.use('/api/v1/purchase-orders', purchaseOrdersRouter);
   app.use('/api/v1/kitchen', kitchenRouter);
+  app.use('/api/v1/deliveries', deliveriesRouter);
+  app.use('/api/v1/driver', driverRouter);
 
   // Health check — used by Docker / CI
   app.get('/health', (_req: Request, res: Response) => {

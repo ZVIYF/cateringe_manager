@@ -117,6 +117,13 @@ enum PurchaseOrderStatus {
   RECEIVED
 }
 
+enum DeliveryStatus {
+  UNASSIGNED
+  ASSIGNED
+  EN_ROUTE
+  DELIVERED
+}
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // User model (Week 1 — Auth & Users module)
@@ -192,6 +199,7 @@ model Order {
   isLocked           Boolean     @default(false) @map("is_locked")
   latestQuoteVersion Int?        @map("latest_quote_version")
   publicQuoteToken   String?     @unique @map("public_quote_token")
+  deliveryId         String?     @map("delivery_id")
   createdById        String      @map("created_by_id")
   createdBy          Json        // { id, name }
 
@@ -359,6 +367,44 @@ model KitchenTask {
   updatedAt           DateTime          @updatedAt @map("updated_at")
 
   @@map("kitchen_tasks")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Delivery model (Phase 9 — Deliveries & Driver logistics module)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Delivery {
+  id                 String         @id @default(cuid())
+  orderId            String         @map("order_id")
+  orderNumber        Int            @map("order_number")
+  customerName       String         @map("customer_name")
+  customerPhone      String         @map("customer_phone")
+  address            String
+  lat                Float?
+  lng                Float?
+  driverId           String?        @map("driver_id")
+  driverName         String?        @map("driver_name")
+  sequence           Int?
+  plannedDepartureAt DateTime?      @map("planned_departure_at")
+  status             DeliveryStatus @default(UNASSIGNED)
+  date               String         // YYYY-MM-DD
+  startedAt          DateTime?      @map("started_at")
+  completedAt        DateTime?      @map("completed_at")
+  boxesCount         Int            @default(1) @map("boxes_count")
+  notes              String?
+  receiverName       String?        @map("receiver_name")
+  signatureUrl       String?        @map("signature_url")
+  photoUrl           String?        @map("photo_url")
+  deliveryNotes      String?        @map("delivery_notes")
+  checkedBoxes       Json           @default("[]") @map("checked_boxes")
+  completionLat      Float?         @map("completion_lat")
+  completionLng      Float?         @map("completion_lng")
+  clientCompletedAt  DateTime?      @map("client_completed_at")
+
+  createdAt          DateTime       @default(now()) @map("created_at")
+  updatedAt          DateTime       @updatedAt @map("updated_at")
+
+  @@map("deliveries")
 }
 
 
