@@ -89,6 +89,13 @@ enum PaymentMethod {
   NET_30
 }
 
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // User model (Week 1 — Auth & Users module)
 // Fields: id, email, passwordHash, role, active
@@ -162,6 +169,7 @@ model Order {
   allowedTransitions OrderStatus[] @map("allowed_transitions")
   isLocked           Boolean     @default(false) @map("is_locked")
   latestQuoteVersion Int?        @map("latest_quote_version")
+  publicQuoteToken   String?     @unique @map("public_quote_token")
   createdById        String      @map("created_by_id")
   createdBy          Json        // { id, name }
 
@@ -170,5 +178,45 @@ model Order {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("orders")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Quote model (Phase 6 — Public Quotes portal & Quotes management)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Quote {
+  id            String    @id @default(cuid())
+  orderId       String    @map("order_id")
+  version       Int       @default(1)
+  token         String    @unique @default(cuid())
+  signerName    String?   @map("signer_name")
+  signaturePng  String?   @map("signature_png")
+  approvedAt    DateTime? @map("approved_at")
+  changeRequest String?   @map("change_request")
+  pdfUrl        String?   @map("pdf_url")
+
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  @@map("quotes")
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Payment model (Phase 6 — Payments module)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Payment {
+  id         String        @id @default(cuid())
+  orderId    String        @map("order_id")
+  amount     Int           // In agorot
+  method     PaymentMethod
+  status     PaymentStatus @default(SUCCEEDED)
+  reference  String?
+  receiptUrl String?       @map("receipt_url")
+
+  createdAt  DateTime      @default(now()) @map("created_at")
+  updatedAt  DateTime      @updatedAt @map("updated_at")
+
+  @@map("payments")
 }
 

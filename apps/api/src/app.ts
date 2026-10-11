@@ -8,6 +8,8 @@ import { authRouter } from './modules/auth/auth.routes';
 import { usersRouter } from './modules/users/users.routes';
 import { dishesRouter } from './modules/dishes/dishes.routes';
 import { ordersRouter } from './modules/orders/orders.routes';
+import { publicQuotesRouter } from './modules/publicQuotes/publicQuotes.routes';
+import { paymentsRouter } from './modules/payments/payments.routes';
 
 export function createApp(): Express {
   const app = express();
@@ -29,6 +31,8 @@ export function createApp(): Express {
   app.use('/api/v1/users', usersRouter);
   app.use('/api/v1/dishes', dishesRouter);
   app.use('/api/v1/orders', ordersRouter);
+  app.use('/api/v1/public/quotes', publicQuotesRouter);
+  app.use('/api/v1/payments', paymentsRouter);
 
   // Health check — used by Docker / CI
   app.get('/health', (_req: Request, res: Response) => {
