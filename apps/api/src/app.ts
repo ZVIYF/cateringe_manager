@@ -12,6 +12,9 @@ import { publicQuotesRouter } from './modules/publicQuotes/publicQuotes.routes';
 import { paymentsRouter } from './modules/payments/payments.routes';
 import { dashboardRouter } from './modules/dashboard/dashboard.routes';
 import { reportsRouter } from './modules/reports/reports.routes';
+import { ingredientsRouter, inventoryRouter } from './modules/inventory/inventory.routes';
+import { suppliersRouter, purchaseOrdersRouter } from './modules/purchasing/purchasing.routes';
+import { kitchenRouter } from './modules/kitchen/kitchen.routes';
 
 export function createApp(): Express {
   const app = express();
@@ -37,6 +40,11 @@ export function createApp(): Express {
   app.use('/api/v1/payments', paymentsRouter);
   app.use('/api/v1/dashboard', dashboardRouter);
   app.use('/api/v1/reports', reportsRouter);
+  app.use('/api/v1/ingredients', ingredientsRouter);
+  app.use('/api/v1/inventory', inventoryRouter);
+  app.use('/api/v1/suppliers', suppliersRouter);
+  app.use('/api/v1/purchase-orders', purchaseOrdersRouter);
+  app.use('/api/v1/kitchen', kitchenRouter);
 
   // Health check — used by Docker / CI
   app.get('/health', (_req: Request, res: Response) => {
