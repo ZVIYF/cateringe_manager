@@ -112,12 +112,19 @@ export const OrdersListQuery = ListQuery.extend({
 });
 
 export const CreateOrderBody = z.object({ customerId: Id, event: EventInput });
+export const OrderCreate = CreateOrderBody;
+export type OrderCreate = z.infer<typeof OrderCreate>;
 
 export const UpdateOrderBody = z.object({
   version: z.number().int(),
   event: EventInput.partial().optional(),
   pricing: Pricing.partial().optional()
 });
+export const OrderUpdate = UpdateOrderBody;
+export type OrderUpdate = z.infer<typeof OrderUpdate>;
+
+export const OrderBase = Order;
+export type OrderBase = z.infer<typeof OrderBase>;
 
 export const PutItemsBody = z.object({
   version: z.number().int(),
@@ -133,4 +140,7 @@ export const PutItemsBody = z.object({
 export const TransitionBody = z.object({ to: OrderStatus, reason: z.string().min(3).optional() });
 
 export const OrderResponse = dataOf(Order);
+export type OrderResponse = z.infer<typeof OrderResponse>;
+
 export const OrdersListResponse = pageOf(OrderListItem);
+export type OrdersListResponse = z.infer<typeof OrdersListResponse>;
