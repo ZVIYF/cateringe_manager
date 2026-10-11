@@ -2,6 +2,9 @@
 
 Newest first. Additive changes bump the minor version, breaking changes bump the major version.
 
+## v1.5 — 2026-10-11
+- Add Deliveries & Driver Logistics schemas (`Delivery`, `DeliveriesQuery`, `UpdateDeliveryBody`, `StartDeliveryResponse`, `CompleteDeliveryBody`, `CompleteDeliveryResponse`) per §5.7.
+
 ## v1.4 — 2026-10-11
 - Add Inventory, Purchasing & Kitchen schemas (`Ingredient`, `StockMove`, `InventoryForecast`, `Supplier`, `PurchaseOrder`, `KitchenTask`, etc.) per §5.5 and §5.6.
 
