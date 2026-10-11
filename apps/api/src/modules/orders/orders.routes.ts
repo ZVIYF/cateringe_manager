@@ -1,5 +1,5 @@
 import { Router, type IRouter } from 'express';
-import { OrderSchemas } from '@catering/shared';
+import { OrderSchemas, DashboardSchemas } from '@catering/shared';
 import { requireAuth, requireRole } from '../../lib/auth';
 import { validate } from '../../lib/validate';
 import * as controller from './orders.controller';
@@ -14,11 +14,28 @@ export const ordersRouter: IRouter = Router();
 ordersRouter.use(requireAuth);
 
 // GET /orders - accessible by ADMIN and OFFICE
+// Supports ?view=calendar per §5.2 or regular paginated list
 ordersRouter.get(
   '/',
   requireRole('ADMIN', 'OFFICE'),
-  validate('query', OrderSchemas.OrdersListQuery),
-  controller.getOrders
+  (req, res, next) => {
+    if (req.query['view'] === 'calendar') {
+      return validate('query', DashboardSchemas.CalendarViewQuery)(req, res, () =>
+        controller.getCalendarOrders(req, res, next)
+      );
+    }
+    return validate('query', OrderSchemas.OrdersListQuery)(req, res, () =>
+      controller.getOrders(req, res, next)
+    );
+  }
+);
+
+// GET /orders/calendar - direct calendar route
+ordersRouter.get(
+  '/calendar',
+  requireRole('ADMIN', 'OFFICE'),
+  validate('query', DashboardSchemas.CalendarViewQuery.omit({ view: true })),
+  controller.getCalendarOrders
 );
 
 // POST /orders - accessible by ADMIN and OFFICE
