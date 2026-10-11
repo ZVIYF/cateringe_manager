@@ -10,6 +10,8 @@ import { dishesRouter } from './modules/dishes/dishes.routes';
 import { ordersRouter } from './modules/orders/orders.routes';
 import { publicQuotesRouter } from './modules/publicQuotes/publicQuotes.routes';
 import { paymentsRouter } from './modules/payments/payments.routes';
+import { dashboardRouter } from './modules/dashboard/dashboard.routes';
+import { reportsRouter } from './modules/reports/reports.routes';
 
 export function createApp(): Express {
   const app = express();
@@ -33,6 +35,8 @@ export function createApp(): Express {
   app.use('/api/v1/orders', ordersRouter);
   app.use('/api/v1/public/quotes', publicQuotesRouter);
   app.use('/api/v1/payments', paymentsRouter);
+  app.use('/api/v1/dashboard', dashboardRouter);
+  app.use('/api/v1/reports', reportsRouter);
 
   // Health check — used by Docker / CI
   app.get('/health', (_req: Request, res: Response) => {
@@ -51,7 +55,6 @@ export function createApp(): Express {
   });
 
   // ── Global error handler ─────────────────────────────────────────────────────
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
     const requestId = (req as Request & { requestId?: string }).requestId ?? 'unknown';
 

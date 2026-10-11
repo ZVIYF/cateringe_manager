@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import { prisma } from '../../lib/prisma';
-import { OrderSchemas, calcTotals, type OrderStatus, type DiscountType } from '@catering/shared';
-import { notFound, versionConflict } from '../../lib/errors';
+import { OrderSchemas, DashboardSchemas, calcTotals, type OrderStatus, type DiscountType, type Kashrut } from '@catering/shared';
+import { notFound, versionConflict, AppError } from '../../lib/errors';
 import type { Prisma } from '@prisma/client';
 
 function formatOrder(raw: {
@@ -349,3 +349,71 @@ export async function updateOrderItems(req: Request, res: Response, next: NextFu
     next(err);
   }
 }
+
+/**
+ * GET /orders?view=calendar
+ * Returns lightweight order summaries for the calendar view (§5.2).
+ */
+export async function getCalendarOrders(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const query = req.query as {
+      from: string;
+      to: string;
+    };
+    const { from, to } = query;
+
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+    const diffDays = (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24);
+
+    if (diffDays < 0 || diffDays > 62) {
+      return next(
+        new AppError('VALIDATION_ERROR', 'טווח התאריכים המרבי ליומן הוא 62 ימים', {
+          fields: { range: 'טווח תאריכים לא תקין (מקסימום 62 ימים)' },
+        })
+      );
+    }
+
+    const orders = await prisma.order.findMany({
+      select: {
+        id: true,
+        number: true,
+        status: true,
+        customer: true,
+        event: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    const calendarItems = orders
+      .map(o => {
+        const event = o.event as { startsAt?: string; guests?: number; kashrut?: Kashrut } | null;
+        const customer = o.customer as { name?: string } | null;
+        const startsAt = event?.startsAt ?? '';
+        return {
+          id: o.id,
+          number: o.number,
+          status: o.status,
+          customerName: customer?.name ?? '',
+          startsAt,
+          guests: event?.guests ?? 1,
+          kashrut: event?.kashrut ?? 'MEAT',
+        };
+      })
+      .filter(item => {
+        if (!item.startsAt) return false;
+        const dateStr = item.startsAt.slice(0, 10);
+        return dateStr >= from && dateStr <= to;
+      })
+      .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime());
+
+    const response = DashboardSchemas.CalendarViewResponse.parse({
+      data: calendarItems,
+    });
+
+    res.json(response);
+  } catch (err) {
+    next(err);
+  }
+}
+
