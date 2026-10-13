@@ -7,6 +7,9 @@ import { inventoryHandlers } from './inventory';
 import { paymentsHandlers } from './payments';
 import { purchasingHandlers } from './purchasing';
 import { kitchenHandlers } from './kitchen';
+import { deliveriesHandlers } from './deliveries';
+import { reportsHandlers } from './reports';
+import { settingsHandlers } from './settings';
 
 const modules = {
   auth: authHandlers,
@@ -17,7 +20,10 @@ const modules = {
   inventory: inventoryHandlers,
   payments: paymentsHandlers,
   purchasing: purchasingHandlers,
-  kitchen: kitchenHandlers
+  kitchen: kitchenHandlers,
+  deliveries: deliveriesHandlers,
+  reports: reportsHandlers,
+  settings: settingsHandlers
 };
 
 /** `VITE_MOCK_MODULES` limits mocking to the listed modules; empty = all. */

@@ -17,7 +17,11 @@ import { InventoryPage } from '@/pages/S10-Inventory/InventoryPage';
 import { SuppliersPage } from '@/pages/S11-Purchasing/SuppliersPage';
 import { PurchaseOrdersPage } from '@/pages/S11-Purchasing/PurchaseOrdersPage';
 import { KitchenTabletPage } from '@/pages/S12-Kitchen/KitchenTabletPage';
+import { DeliveriesDispatcherPage } from '@/pages/S13-Deliveries/DeliveriesDispatcherPage';
+import { DriverMobilePage } from '@/pages/S13-Deliveries/DriverMobilePage';
 import { PaymentsLedgerPage } from '@/pages/S14-Payments/PaymentsLedgerPage';
+import { ReportsPage } from '@/pages/S15-Reports/ReportsPage';
+import { SettingsPage } from '@/pages/S16-Settings/SettingsPage';
 
 export const routes: RouteObject[] = [
   { path: '/login', element: <LoginPage /> },
@@ -41,11 +45,11 @@ export const routes: RouteObject[] = [
       { path: '/suppliers', element: <SuppliersPage /> },
       { path: '/purchase-orders', element: <PurchaseOrdersPage /> },
       { path: '/kitchen', element: <KitchenTabletPage /> },
-      { path: '/deliveries', element: <Placeholder title="משלוחים" /> },
-      { path: '/driver', element: <Placeholder title="נהג" /> },
+      { path: '/deliveries', element: <DeliveriesDispatcherPage /> },
+      { path: '/driver', element: <DriverMobilePage /> },
       { path: '/payments', element: <PaymentsLedgerPage /> },
-      { path: '/reports', element: <Placeholder title="דוחות" /> },
-      { path: '/settings', element: <Placeholder title="הגדרות" /> },
+      { path: '/reports', element: <ReportsPage /> },
+      { path: '/settings', element: <SettingsPage /> },
       { path: '*', element: <Placeholder title="העמוד לא נמצא" /> }
     ]
   }
