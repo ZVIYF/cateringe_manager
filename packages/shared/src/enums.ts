@@ -21,8 +21,18 @@ export const PurchaseOrderStatus = e(['DRAFT', 'SENT', 'PARTIAL', 'RECEIVED'] as
 export type Role = z.infer<typeof Role>;
 export type OrderStatus = z.infer<typeof OrderStatus>;
 export type Kashrut = z.infer<typeof Kashrut>;
+export type EventType = z.infer<typeof EventType>;
+export type ServiceType = z.infer<typeof ServiceType>;
+export type CustomerType = z.infer<typeof CustomerType>;
+export type DishCategory = z.infer<typeof DishCategory>;
+export type SaleUnit = z.infer<typeof SaleUnit>;
 export type DiscountType = z.infer<typeof DiscountType>;
+export type PaymentMethod = z.infer<typeof PaymentMethod>;
+export type PaymentStatus = z.infer<typeof PaymentStatus>;
+export type KitchenTaskStatus = z.infer<typeof KitchenTaskStatus>;
 export type DeliveryStatus = z.infer<typeof DeliveryStatus>;
+export type StockMoveType = z.infer<typeof StockMoveType>;
+export type PurchaseOrderStatus = z.infer<typeof PurchaseOrderStatus>;
 
 export const labels = {
   Role: { ADMIN: 'מנהל', OFFICE: 'משרד', KITCHEN_MANAGER: 'מנהל מטבח', KITCHEN_STAFF: 'עובד מטבח', DRIVER: 'נהג' },

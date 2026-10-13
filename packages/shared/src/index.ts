@@ -10,3 +10,8 @@ export * as PublicQuoteSchemas from './schemas/publicQuote';
 export * as DashboardSchemas from './schemas/dashboard';
 export * as InventoryKitchenSchemas from './schemas/inventoryKitchen';
 export * as DeliverySchemas from './schemas/deliveries';
+
+export type { Order, OrderListItem, OrderItem, OrderService, EventInput, Event } from './schemas/order';
+export type { Customer, CustomerPublic, CustomerCreate } from './schemas/customer';
+export type { Dish, DishKitchenView, DishCreate } from './schemas/dish';
+export type { PublicQuote, ApproveQuoteBody, ApproveQuoteResponse, BusinessInfo } from './schemas/publicQuote';
