@@ -48,3 +48,25 @@ export type {
   ProductionSheetQuery,
   ProductionSheetResponse
 } from './schemas/inventoryKitchen';
+
+export type {
+  Delivery,
+  DeliveriesQuery,
+  UpdateDeliveryBody,
+  StartDeliveryResponse,
+  CompleteDeliveryBody,
+  CompleteDeliveryResponse
+} from './schemas/deliveries';
+
+export type {
+  UserPublic,
+  CreateUserBody,
+  UpdateUserBody
+} from './schemas/user';
+
+export type {
+  RevenueReportItem,
+  ProfitabilityReportItem,
+  TopDishReportItem,
+  ConversionReport
+} from './schemas/dashboard';
