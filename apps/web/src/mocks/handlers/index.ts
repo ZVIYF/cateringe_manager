@@ -1,6 +1,7 @@
 import { authHandlers } from './auth';
+import { dashboardHandlers } from './dashboard';
 
-const modules = { auth: authHandlers };
+const modules = { auth: authHandlers, dashboard: dashboardHandlers };
 
 /** `VITE_MOCK_MODULES` limits mocking to the listed modules; empty = all. */
 export function getHandlers(only = import.meta.env.VITE_MOCK_MODULES as string | undefined) {

@@ -1,15 +1,14 @@
-import { labels } from '@catering/shared';
-import { LogOut } from 'lucide-react';
-import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { useLogout, useMe } from '@/api/auth';
-import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useMe } from '@/api/auth';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Sidebar } from '@/components/layout/Sidebar';
+import { Header } from '@/components/layout/Header';
 
 export function ProtectedLayout() {
   const location = useLocation();
-  const navigate = useNavigate();
   const { data, isPending } = useMe();
-  const logout = useLogout();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   if (isPending) {
     return (
@@ -22,28 +21,24 @@ export function ProtectedLayout() {
   if (!data) return <Navigate to="/login" replace state={{ from: location }} />;
 
   const { user } = data;
+
   return (
-    <div className="min-h-screen">
-      <header className="flex items-center justify-between border-b bg-background px-6 py-3">
-        <span className="text-lg font-bold">ניהול קייטרינג</span>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-muted-foreground">
-            {user.name} · {labels.Role[user.role]}
-          </span>
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={logout.isPending}
-            onClick={() => logout.mutate(undefined, { onSettled: () => navigate('/login', { replace: true }) })}
-          >
-            <LogOut className="h-4 w-4" aria-hidden />
-            יציאה
-          </Button>
-        </div>
-      </header>
-      <main className="p-6">
-        <Outlet />
-      </main>
+    <div className="flex min-h-screen bg-muted/20">
+      <Sidebar
+        userRole={user.role}
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+      />
+
+      <div className="flex flex-1 flex-col min-w-0">
+        <Header
+          user={user}
+          onToggleMenu={() => setMobileMenuOpen((prev) => !prev)}
+        />
+        <main className="flex-1 p-4 md:p-6 lg:p-8">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }
