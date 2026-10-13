@@ -3,8 +3,10 @@ import { dashboardHandlers } from './dashboard';
 import { ordersHandlers } from './orders';
 import { customersHandlers } from './customers';
 import { dishesHandlers } from './dishes';
-import { ingredientsHandlers } from './ingredients';
+import { inventoryHandlers } from './inventory';
 import { paymentsHandlers } from './payments';
+import { purchasingHandlers } from './purchasing';
+import { kitchenHandlers } from './kitchen';
 
 const modules = {
   auth: authHandlers,
@@ -12,8 +14,10 @@ const modules = {
   orders: ordersHandlers,
   customers: customersHandlers,
   dishes: dishesHandlers,
-  ingredients: ingredientsHandlers,
-  payments: paymentsHandlers
+  inventory: inventoryHandlers,
+  payments: paymentsHandlers,
+  purchasing: purchasingHandlers,
+  kitchen: kitchenHandlers
 };
 
 /** `VITE_MOCK_MODULES` limits mocking to the listed modules; empty = all. */

@@ -15,4 +15,36 @@ export type { Order, OrderListItem, OrderItem, OrderService, EventInput, Event }
 export type { Customer, CustomerPublic, CustomerCreate, CustomerUpdate, CustomerContact, CustomerStats } from './schemas/customer';
 export type { Dish, DishKitchenView, DishCreate, DishUpdate, DishRecipeUpdate, RecipeLine, RecipeLineInput, DishCost, DishListQuery } from './schemas/dish';
 export type { PublicQuote, ApproveQuoteBody, ApproveQuoteResponse, BusinessInfo, PaymentListItem, OpenBalanceItem, CreatePaymentBody, CreatePaymentLinkBody, PaymentLinkResponse, RefundPaymentBody } from './schemas/publicQuote';
-export type { Ingredient, IngredientCreate, IngredientUpdate, IngredientListQuery } from './schemas/inventoryKitchen';
+export type {
+  Ingredient,
+  IngredientCreate,
+  IngredientUpdate,
+  IngredientListQuery,
+  StockMove,
+  CreateStockMoveBody,
+  StockMovesListQuery,
+  InventoryForecastItem,
+  InventoryForecastResponse,
+  InventoryForecastQuery,
+  Supplier,
+  SupplierCreate,
+  SupplierUpdate,
+  SupplierListQuery,
+  PurchaseOrder,
+  PurchaseOrderLine,
+  PurchaseOrderLineInput,
+  CreatePurchaseOrderBody,
+  CreatePOsFromShortagesBody,
+  ReceivePurchaseOrderLine,
+  ReceivePurchaseOrderBody,
+  SendPurchaseOrderBody,
+  PurchaseOrderListQuery,
+  KitchenTask,
+  KitchenTaskUpdate,
+  KitchenTasksQuery,
+  KitchenTaskAssignee,
+  KitchenTaskDish,
+  KitchenTaskOrder,
+  ProductionSheetQuery,
+  ProductionSheetResponse
+} from './schemas/inventoryKitchen';

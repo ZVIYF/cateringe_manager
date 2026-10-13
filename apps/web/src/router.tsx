@@ -13,6 +13,10 @@ import { CustomersListPage } from '@/pages/S08-Customers/CustomersListPage';
 import { CustomerDetailPage } from '@/pages/S08-Customers/CustomerDetailPage';
 import { DishesListPage } from '@/pages/S09-Dishes/DishesListPage';
 import { DishEditorPage } from '@/pages/S09-Dishes/DishEditorPage';
+import { InventoryPage } from '@/pages/S10-Inventory/InventoryPage';
+import { SuppliersPage } from '@/pages/S11-Purchasing/SuppliersPage';
+import { PurchaseOrdersPage } from '@/pages/S11-Purchasing/PurchaseOrdersPage';
+import { KitchenTabletPage } from '@/pages/S12-Kitchen/KitchenTabletPage';
 import { PaymentsLedgerPage } from '@/pages/S14-Payments/PaymentsLedgerPage';
 
 export const routes: RouteObject[] = [
@@ -33,9 +37,10 @@ export const routes: RouteObject[] = [
       { path: '/menus', element: <DishesListPage /> },
       { path: '/dishes/new', element: <DishEditorPage /> },
       { path: '/dishes/:id', element: <DishEditorPage /> },
-      { path: '/inventory', element: <Placeholder title="מלאי" /> },
-      { path: '/suppliers', element: <Placeholder title="ספקים ורכש" /> },
-      { path: '/kitchen', element: <Placeholder title="מטבח" /> },
+      { path: '/inventory', element: <InventoryPage /> },
+      { path: '/suppliers', element: <SuppliersPage /> },
+      { path: '/purchase-orders', element: <PurchaseOrdersPage /> },
+      { path: '/kitchen', element: <KitchenTabletPage /> },
       { path: '/deliveries', element: <Placeholder title="משלוחים" /> },
       { path: '/driver', element: <Placeholder title="נהג" /> },
       { path: '/payments', element: <PaymentsLedgerPage /> },
