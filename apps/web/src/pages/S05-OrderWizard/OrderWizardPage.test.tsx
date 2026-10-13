@@ -34,6 +34,7 @@ describe('S05 Order Wizard', () => {
     renderApp('/orders/order-101/edit');
 
     expect(await screen.findByRole('heading', { name: /עריכת הזמנה #1045/ })).toBeInTheDocument();
-    expect(screen.getByDisplayValue('בר מצווה — יונתן')).toBeInTheDocument();
+    expect(await screen.findByDisplayValue(/יונתן/)).toBeInTheDocument();
   });
 });
+

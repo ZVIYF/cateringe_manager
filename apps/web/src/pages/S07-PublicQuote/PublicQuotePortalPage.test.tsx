@@ -33,3 +33,4 @@ describe('S07 Public Quote Portal', () => {
     expect(screen.getByText('בקש שינוי בהצעה')).toBeInTheDocument();
   });
 });
+

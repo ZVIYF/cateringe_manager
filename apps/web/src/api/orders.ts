@@ -175,3 +175,4 @@ export function useCustomersList(q?: string) {
     queryFn: () => apiFetch<{ data: Customer[] }>(path)
   });
 }
+

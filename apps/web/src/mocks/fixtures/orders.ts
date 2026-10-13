@@ -435,3 +435,4 @@ export const mockPublicQuote: PublicQuote = {
   status: 'PENDING_APPROVAL',
   terms: 'תנאי תשלום: מקדמה 30% עם אישור ההצעה. היתרה עד 3 ימי עסקים לפני מועד האירוע. ביטול עד 7 ימים מראש ללא דמי ביטול.'
 };
+

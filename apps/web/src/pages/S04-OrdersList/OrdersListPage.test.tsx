@@ -46,3 +46,4 @@ describe('S04 Orders List', () => {
     expect(await screen.findByText(/הייטק סולושנס בע"מ/)).toBeInTheDocument();
   });
 });
+
