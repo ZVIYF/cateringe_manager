@@ -61,7 +61,10 @@ export const mockDishes: Dish[] = [
     imageUrl: null,
     allergens: ['גלוטן'],
     active: true,
-    recipe: [],
+    recipe: [
+      { ingredientId: 'ing-2', ingredientName: 'בשר אסאדו מובחר', unit: 'ק"ג', qtyPerPortion: 0.15 },
+      { ingredientId: 'ing-6', ingredientName: 'עלי סיגר מרוקאי', unit: 'חבילה', qtyPerPortion: 0.2 }
+    ],
     cost: { perPortion: 1200, marginPercent: 62.5 }
   },
   {
@@ -76,7 +79,10 @@ export const mockDishes: Dish[] = [
     imageUrl: null,
     allergens: [],
     active: true,
-    recipe: [],
+    recipe: [
+      { ingredientId: 'ing-1', ingredientName: 'פרגית טרייה', unit: 'ק"ג', qtyPerPortion: 0.35 },
+      { ingredientId: 'ing-4', ingredientName: 'שמן זית כתית מעולה', unit: 'ליטר', qtyPerPortion: 0.03 }
+    ],
     cost: { perPortion: 2100, marginPercent: 61.8 }
   },
   {
@@ -91,7 +97,11 @@ export const mockDishes: Dish[] = [
     imageUrl: null,
     allergens: [],
     active: true,
-    recipe: [],
+    recipe: [
+      { ingredientId: 'ing-3', ingredientName: 'תפוחי אדמה', unit: 'ק"ג', qtyPerPortion: 0.3 },
+      { ingredientId: 'ing-4', ingredientName: 'שמן זית כתית מעולה', unit: 'ליטר', qtyPerPortion: 0.02 },
+      { ingredientId: 'ing-5', ingredientName: 'רוזמרין טרי', unit: 'ק"ג', qtyPerPortion: 0.01 }
+    ],
     cost: { perPortion: 450, marginPercent: 75 }
   },
   {

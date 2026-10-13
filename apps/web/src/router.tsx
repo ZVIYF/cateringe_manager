@@ -9,6 +9,11 @@ import { OrderWizardPage } from '@/pages/S05-OrderWizard/OrderWizardPage';
 import { OrderDetailPage } from '@/pages/S06-OrderDetail/OrderDetailPage';
 import { StaffQuotePreviewPage } from '@/pages/S07-PublicQuote/StaffQuotePreviewPage';
 import { PublicQuotePortalPage } from '@/pages/S07-PublicQuote/PublicQuotePortalPage';
+import { CustomersListPage } from '@/pages/S08-Customers/CustomersListPage';
+import { CustomerDetailPage } from '@/pages/S08-Customers/CustomerDetailPage';
+import { DishesListPage } from '@/pages/S09-Dishes/DishesListPage';
+import { DishEditorPage } from '@/pages/S09-Dishes/DishEditorPage';
+import { PaymentsLedgerPage } from '@/pages/S14-Payments/PaymentsLedgerPage';
 
 export const routes: RouteObject[] = [
   { path: '/login', element: <LoginPage /> },
@@ -23,14 +28,17 @@ export const routes: RouteObject[] = [
       { path: '/orders/:id/edit', element: <OrderWizardPage /> },
       { path: '/orders/:id', element: <OrderDetailPage /> },
       { path: '/orders/:id/quote', element: <StaffQuotePreviewPage /> },
-      { path: '/customers', element: <Placeholder title="לקוחות" /> },
-      { path: '/menus', element: <Placeholder title="תפריטים ומנות" /> },
+      { path: '/customers', element: <CustomersListPage /> },
+      { path: '/customers/:id', element: <CustomerDetailPage /> },
+      { path: '/menus', element: <DishesListPage /> },
+      { path: '/dishes/new', element: <DishEditorPage /> },
+      { path: '/dishes/:id', element: <DishEditorPage /> },
       { path: '/inventory', element: <Placeholder title="מלאי" /> },
       { path: '/suppliers', element: <Placeholder title="ספקים ורכש" /> },
       { path: '/kitchen', element: <Placeholder title="מטבח" /> },
       { path: '/deliveries', element: <Placeholder title="משלוחים" /> },
       { path: '/driver', element: <Placeholder title="נהג" /> },
-      { path: '/payments', element: <Placeholder title="תשלומים" /> },
+      { path: '/payments', element: <PaymentsLedgerPage /> },
       { path: '/reports', element: <Placeholder title="דוחות" /> },
       { path: '/settings', element: <Placeholder title="הגדרות" /> },
       { path: '*', element: <Placeholder title="העמוד לא נמצא" /> }

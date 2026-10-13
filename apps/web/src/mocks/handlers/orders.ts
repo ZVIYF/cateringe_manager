@@ -423,36 +423,6 @@ export const ordersHandlers = [
     });
   }),
 
-  // ── GET /api/v1/dishes ──────────────────────────────────────────────────────
-  http.get('*/api/v1/dishes', ({ request }) => {
-    const url = new URL(request.url);
-    const kashrut = url.searchParams.get('kashrut');
-    const category = url.searchParams.get('category');
-    const q = url.searchParams.get('q')?.toLowerCase();
-
-    let list = mockDishes;
-    if (kashrut) list = list.filter(d => d.kashrut === kashrut || d.kashrut === 'PARVE');
-    if (category) list = list.filter(d => d.category === category);
-    if (q) list = list.filter(d => d.name.toLowerCase().includes(q));
-
-    return HttpResponse.json({ data: list });
-  }),
-
-  // ── GET /api/v1/customers ───────────────────────────────────────────────────
-  http.get('*/api/v1/customers', ({ request }) => {
-    const url = new URL(request.url);
-    const q = url.searchParams.get('q')?.toLowerCase();
-
-    let list = mockCustomers;
-    if (q) {
-      list = list.filter(
-        c => c.name.toLowerCase().includes(q) || c.phone.includes(q)
-      );
-    }
-
-    return HttpResponse.json({ data: list });
-  }),
-
   // ── GET /api/v1/public/quotes/:token ────────────────────────────────────────
   http.get('*/api/v1/public/quotes/:token', ({ params }) => {
     const { token } = params;

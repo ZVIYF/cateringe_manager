@@ -12,6 +12,7 @@ export * as InventoryKitchenSchemas from './schemas/inventoryKitchen';
 export * as DeliverySchemas from './schemas/deliveries';
 
 export type { Order, OrderListItem, OrderItem, OrderService, EventInput, Event } from './schemas/order';
-export type { Customer, CustomerPublic, CustomerCreate } from './schemas/customer';
-export type { Dish, DishKitchenView, DishCreate } from './schemas/dish';
-export type { PublicQuote, ApproveQuoteBody, ApproveQuoteResponse, BusinessInfo } from './schemas/publicQuote';
+export type { Customer, CustomerPublic, CustomerCreate, CustomerUpdate, CustomerContact, CustomerStats } from './schemas/customer';
+export type { Dish, DishKitchenView, DishCreate, DishUpdate, DishRecipeUpdate, RecipeLine, RecipeLineInput, DishCost, DishListQuery } from './schemas/dish';
+export type { PublicQuote, ApproveQuoteBody, ApproveQuoteResponse, BusinessInfo, PaymentListItem, OpenBalanceItem, CreatePaymentBody, CreatePaymentLinkBody, PaymentLinkResponse, RefundPaymentBody } from './schemas/publicQuote';
+export type { Ingredient, IngredientCreate, IngredientUpdate, IngredientListQuery } from './schemas/inventoryKitchen';
